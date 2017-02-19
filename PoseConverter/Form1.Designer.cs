@@ -37,7 +37,7 @@ namespace PoseConverter
             this.textBoxZyzRad = new System.Windows.Forms.TextBox();
             this.textBoxZyzDeg = new System.Windows.Forms.TextBox();
             this.textBoxZyxRad = new System.Windows.Forms.TextBox();
-            this.textBox4ZyxDeg = new System.Windows.Forms.TextBox();
+            this.textBoxZyxDeg = new System.Windows.Forms.TextBox();
             this.labelRotationMatrix = new System.Windows.Forms.Label();
             this.richTextBoxRotationMatrix = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -116,12 +116,12 @@ namespace PoseConverter
             this.textBoxZyxRad.TabIndex = 6;
             this.textBoxZyxRad.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
-            // textBox4ZyxDeg
+            // textBoxZyxDeg
             // 
-            this.textBox4ZyxDeg.Location = new System.Drawing.Point(155, 109);
-            this.textBox4ZyxDeg.Name = "textBox4ZyxDeg";
-            this.textBox4ZyxDeg.Size = new System.Drawing.Size(310, 19);
-            this.textBox4ZyxDeg.TabIndex = 7;
+            this.textBoxZyxDeg.Location = new System.Drawing.Point(155, 109);
+            this.textBoxZyxDeg.Name = "textBoxZyxDeg";
+            this.textBoxZyxDeg.Size = new System.Drawing.Size(310, 19);
+            this.textBoxZyxDeg.TabIndex = 7;
             // 
             // labelRotationMatrix
             // 
@@ -173,7 +173,7 @@ namespace PoseConverter
             this.Controls.Add(this.button1);
             this.Controls.Add(this.richTextBoxRotationMatrix);
             this.Controls.Add(this.labelRotationMatrix);
-            this.Controls.Add(this.textBox4ZyxDeg);
+            this.Controls.Add(this.textBoxZyxDeg);
             this.Controls.Add(this.textBoxZyxRad);
             this.Controls.Add(this.textBoxZyzDeg);
             this.Controls.Add(this.textBoxZyzRad);
@@ -195,7 +195,7 @@ namespace PoseConverter
         private System.Windows.Forms.TextBox textBoxZyzRad;
         private System.Windows.Forms.TextBox textBoxZyzDeg;
         private System.Windows.Forms.TextBox textBoxZyxRad;
-        private System.Windows.Forms.TextBox textBox4ZyxDeg;
+        private System.Windows.Forms.TextBox textBoxZyxDeg;
         private System.Windows.Forms.Label labelRotationMatrix;
         private System.Windows.Forms.RichTextBox richTextBoxRotationMatrix;
         private System.Windows.Forms.Button button1;
