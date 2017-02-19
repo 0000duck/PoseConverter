@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace PoseConverter
 {
@@ -29,7 +31,7 @@ namespace PoseConverter
         }
 
         //Convert angles3 written in [rad] into [deg]
-        public static double[] Uad2Deg(double[] angles3)
+        public static double[] Rad2Deg(double[] angles3)
         {
             if (angles3.Length != 3)
             {
@@ -137,5 +139,48 @@ namespace PoseConverter
             var ans = matR.Multiply(matP).Multiply(matY);
             return ans;
         }
+
+        public static List<Vector<double>> GetOAT(Matrix<double> rot33)
+        {
+            var TOLERANCE = 1E-09;
+            var st2 = Math.Sqrt(rot33[0, 2] * rot33[0, 2] + rot33[1, 2] * rot33[1, 2]);
+            double a1, o1, t1;
+            double a2, o2, t2;
+
+            if (TOLERANCE < Math.Abs(st2))
+            {
+                var st = st2;
+                a1 = Math.Atan2(+st, rot33[2, 2]);
+                a2 = Math.Atan2(-st, rot33[2, 2]);
+
+                o1 = Math.Atan2(rot33[1, 2], +rot33[0, 2]);
+                o2 = Math.Atan2(rot33[1, 2], -rot33[0, 2]);
+
+                t1 = Math.Atan2(rot33[2, 1], -rot33[2, 0]);
+                t2 = Math.Atan2(rot33[2, 1], +rot33[2, 0]);
+            }
+            else
+            {
+                //o1+t1=Math.Atan2(rot33[1, 0], rot33[1, 1]) を満たす (o1, t1)の組み合わせは無数にある。
+                //ここでは、t1=0 という解を得ることにする。
+                o1 = Math.Atan2(rot33[1, 0], rot33[1, 1]);
+                a1 = (1d - rot33[2, 2]) * Math.PI / 2d;
+                t1 = 0d;
+
+                o2 = double.NaN;
+                a2 = double.NaN;
+                t2 = double.NaN;
+            }
+
+            var ans = new List<Vector<double>>();
+            ans.Add(CreateVector.DenseOfArray(new double[] {o1, a1, t1}));
+            if (!double.IsNaN(a2) || !double.IsNaN(a2) || !double.IsNaN(t2))
+            {
+                ans.Add(CreateVector.DenseOfArray(new double[] {o2, a2, t2}));
+            }
+
+            return ans;
+        }
+
     }
 }

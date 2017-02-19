@@ -67,7 +67,18 @@ namespace PoseConverter
             }
 
             rotMat = CalcRotationMatrix(checkedRadioButtion);
+            UpdateAllFields(rotMat);
+
             richTextBoxRotationMatrix.Text = rotMat.ToMatrixString();
+        }
+
+        private void UpdateAllFields(Matrix<double> rotMat)
+        {
+            var oatInRad = MathUtil.GetOAT(rotMat).ElementAt(0);
+            textBoxZyzRad.Text = String.Format("{0}, {1}, {2}", oatInRad[0], oatInRad[1], oatInRad[2]);
+
+            var oatInDeg = MathUtil.Rad2Deg(oatInRad.ToArray());
+            textBoxZyzDeg.Text = String.Format("{0}, {1}, {2}", oatInDeg[0], oatInDeg[1], oatInDeg[2]);
         }
 
         /// <summary>選択されたラジオボタンに応じて、対応する回転行列を返す </summary>
