@@ -115,7 +115,7 @@ namespace PoseConverter
                     return mat;
 
                 default:
-                    throw new Exception("Select a item from 'Convert from...'");
+                    throw new Exception("Select an item from 'Convert from...'");
             }
         }
 
