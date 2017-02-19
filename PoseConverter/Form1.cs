@@ -98,7 +98,7 @@ namespace PoseConverter
                     return mat;
 
                 case nameof(radioButtonZyxDeg):
-                    oatInDeg = SplitAndParseText(textBoxZyxRad.Text);
+                    oatInDeg = SplitAndParseText(textBoxZyxDeg.Text);
                     oatInRad = MathUtil.Deg2Rad(oatInDeg);
                     mat = MathUtil.MakeRotationMatrixFromZyxEuler(oatInRad);
                     return mat;
