@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -45,7 +46,7 @@ namespace PoseConverter
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -56,7 +57,67 @@ namespace PoseConverter
 
         private void button1_Click(object sender, EventArgs e)
         {
+            var checkedRadioButtion = groupBox1.Controls.OfType<RadioButton>().SingleOrDefault(rb => rb.Checked == true);
+            Matrix<double> rotMat;
 
+            if (checkedRadioButtion == null)
+            {
+                MessageBox.Show("Select an item from \"Convert from ...\"", "Error");
+                return;
+            }
+
+            rotMat = CalcRotationMatrix(checkedRadioButtion);
+            richTextBoxRotationMatrix.Text = rotMat.ToMatrixString();
+        }
+
+        /// <summary>選択されたラジオボタンに応じて、対応する回転行列を返す </summary>
+        /// <param name="checkedRadioButtion"></param>
+        /// <returns>回転行列</returns>
+        private Matrix<double> CalcRotationMatrix(RadioButton checkedRadioButtion)
+        {
+            double[] oatInDeg;
+            double[] oatInRad;
+            Matrix<double> mat;
+
+            switch (checkedRadioButtion.Name)
+            {
+                case nameof(radioButtonZyzRad):
+                    oatInRad = SplitAndParseText(textBoxZyzRad.Text);
+                    mat = MathUtil.MakeRotationMatrixFromZyzEuler(oatInRad);
+                    return mat;
+
+                case nameof(radioButtonZyzDeg):
+                    oatInDeg = SplitAndParseText(textBoxZyzDeg.Text);
+                    oatInRad = MathUtil.Deg2Rad(oatInDeg);
+                    mat = MathUtil.MakeRotationMatrixFromZyzEuler(oatInRad);
+                    return mat;
+
+                case nameof(radioButtonZyxRad):
+                    oatInRad = SplitAndParseText(textBoxZyxRad.Text);
+                    mat = MathUtil.MakeRotationMatrixFromZyxEuler(oatInRad);
+                    return mat;
+
+                case nameof(radioButtonZyxDeg):
+                    oatInDeg = SplitAndParseText(textBoxZyxRad.Text);
+                    oatInRad = MathUtil.Deg2Rad(oatInDeg);
+                    mat = MathUtil.MakeRotationMatrixFromZyxEuler(oatInRad);
+                    return mat;
+
+                default:
+                    throw new Exception("Select a item from 'Convert from...'");
+            }
+        }
+
+        /// <summary>入力されたオイラー角(文字列)をパースしてdouble型の配列として返す。 バリデーションは行っていない。</summary>
+        /// <param name="inputtedText"></param>
+        /// <returns>double型3要素の配列</returns>
+        private double[] SplitAndParseText(string inputtedText)
+        {
+            var oatString = inputtedText;
+            var oatStrArray = oatString.Split(',');
+            if (oatStrArray.Length != 3) { throw new ArgumentException("inputtedText must have 2 commas.");}
+            var oat = oatStrArray.Select(double.Parse).ToArray();
+            return oat;
         }
 
         enum ConvertFrom
